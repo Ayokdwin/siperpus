@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-950">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-6xl mx-auto space-y-6">
 
             {{-- Page header --}}
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Peminjam;
-use app\Models\Buku;
+use App\Models\Peminjam;
+use App\Models\Buku;
 
 class DetailPeminjam extends Model
 {
