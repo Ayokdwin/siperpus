@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('detail_peminjams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('peminjaman_id')->constrained('peminjams');
-            $table->foreignId('buku_id')->constrained('bukus');
+            $table->foreignId('peminjaman_id')->constrained('peminjams')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('buku_id')->constrained('bukus')->cascadeOnUpdate()->restrictOnDelete();
             $table->integer('jumlah');
             $table->timestamps();
         });

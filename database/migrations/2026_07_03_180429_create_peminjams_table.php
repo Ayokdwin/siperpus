@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('peminjams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('petugas_id')->constrained('users');
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('petugas_id')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->date('tgl_peminjaman');
             $table->date('tgl_jatuh_tempo');
             $table->date('tgl_pengembalian')->nullable();
