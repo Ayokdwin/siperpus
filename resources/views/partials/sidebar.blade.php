@@ -57,7 +57,7 @@
 
                 <div class="space-y-1">
                     {{-- Buku --}}
-                    <a href=""
+                    <a href="{{ route('buku.index') }}"
                         :class="collapsed && 'justify-center'"
                         class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('buku.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book w-[18px] text-center"></i>

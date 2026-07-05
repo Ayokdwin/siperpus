@@ -53,20 +53,31 @@ class KategoriController extends Controller
 
     public function show(Kategori $kategori)
     {
-        $kategori->loadCount('bukus');
-        $kategori->load('bukus');
+            $kategori->loadCount('bukus');
+            $kategori->load('bukus');
 
-        return view('kategori.show', compact('kategori'));
-    }
-
-    public function destroy(Kategori $kategori)
-    {
-        if ($kategori->bukus()->exists()) {
-            return back()->with('error', 'Kategori tidak dapat dihapus karena masih memiliki buku terkait.');
+            return view('kategori.show', compact('kategori'));
         }
 
-        $kategori->delete();
+        public function destroy(Kategori $kategori)
+    {
+        if ($kategori->bukus()->exists()) {
+            return redirect()
+                ->route('kategori.index')
+                ->with('error', 'Kategori tidak dapat dihapus karena masih memiliki buku terkait.');
+        }
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        try {
+            $kategori->delete();
+
+            return redirect()
+                ->route('kategori.index')
+                ->with('success', 'Kategori berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('kategori.index')
+                ->with('error', 'Terjadi kesalahan saat menghapus kategori.');
+        }
     }
 }

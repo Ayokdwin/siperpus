@@ -48,7 +48,6 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
             'role' => ['required', 'in:admin,petugas,anggota'],
-            'kode_anggota' => ['nullable', 'string', 'max:50', 'unique:users,kode_anggota'],
             'alamat' => ['nullable', 'string'],
         ]);
 
@@ -77,7 +76,6 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'confirmed', 'min:8'],
             'role' => ['required', 'in:admin,petugas,anggota'],
-            'kode_anggota' => ['nullable', 'string', 'max:50', 'unique:users,kode_anggota,' . $user->id],
             'alamat' => ['nullable', 'string'],
         ]);
 
