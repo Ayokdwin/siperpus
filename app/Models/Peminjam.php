@@ -9,6 +9,12 @@ class Peminjam extends Model
 {
     protected $table = 'peminjams';
 
+    protected $casts = [
+        'tgl_peminjaman' => 'date',
+        'tgl_jatuh_tempo' => 'date',
+        'tgl_pengembalian' => 'date',
+    ];
+
     protected $fillable = [
         'user_id',
         'petugas_id',

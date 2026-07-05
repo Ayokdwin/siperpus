@@ -74,7 +74,7 @@
 
                     {{-- User hanya admin --}}
                     @if($currentUser->role == 'admin')
-                        <a href=""
+                        <a href="{{ route('users.index') }}"
                             :class="collapsed && 'justify-center'"
                             class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('users.*') ? $activeClasses : $inactiveClasses }}">
                             <i class="fa-solid fa-users w-[18px] text-center"></i>
