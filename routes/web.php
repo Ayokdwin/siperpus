@@ -21,4 +21,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('kategori', KategoriController::class);
 });
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('kategori', KategoriController::class);
+});
+
 require __DIR__.'/auth.php';
