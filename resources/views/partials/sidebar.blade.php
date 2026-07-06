@@ -140,25 +140,25 @@
 
                 <div class="space-y-1">
                     {{-- Katalog Buku --}}
-                    <a href=""
+                    <a href="{{ route('katalog-buku.index') }}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('katalog.*') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('katalog-buku.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book w-[18px] text-center"></i>
                         <span x-show="!collapsed">Katalog Buku</span>
                     </a>
 
                     {{-- Peminjaman Saya --}}
-                    <a href=""
+                    <a href="{{route('peminjaman-saya.show')}}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('peminjaman.saya') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('peminjaman-saya.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book-open-reader w-[18px] text-center"></i>
                         <span x-show="!collapsed">Peminjaman Saya</span>
                     </a>
 
                     {{-- Riwayat --}}
-                    <a href=""
+                    <a href="{{route('riwayat-peminjaman.show')}}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('riwayat.*') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('riwayat-peminjaman.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-clock-rotate-left w-[18px] text-center"></i>
                         <span x-show="!collapsed">Riwayat Peminjaman</span>
                     </a>

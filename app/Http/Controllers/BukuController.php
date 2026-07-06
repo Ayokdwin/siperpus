@@ -144,8 +144,72 @@ class BukuController extends Controller
             ->route('buku.index')
             ->with('success', 'Data buku berhasil dihapus.');
     }
+   public function userIndex(Request $request)
+{
+    $query = Buku::with('kategori');
 
+    // Search judul, penulis, atau ISBN/kode buku
+    if ($request->filled('q')) {
+        $search = $request->q;
+        $query->where(function ($sub) use ($search) {
+            $sub->where('judul_buku', 'like', "%{$search}%")
+                ->orWhere('penulis', 'like', "%{$search}%")
+                ->orWhere('kode_buku', 'like', "%{$search}%");
+        });
+    }
 
+    // Filter kategori
+    if ($request->filled('kategori')) {
+        $query->where('kategori_id', $request->kategori);
+    }
+
+    // Filter penulis
+    if ($request->filled('penulis')) {
+        $query->where('penulis', $request->penulis);
+    }
+
+    // Filter ketersediaan
+    if ($request->tersedia === 'tersedia') {
+        $query->where('stok', '>', 0);
+    } elseif ($request->tersedia === 'habis') {
+        $query->where('stok', '<=', 0);
+    }
+
+    // Sorting
+    switch ($request->get('sort', 'terbaru')) {
+        case 'judul_asc':
+            $query->orderBy('judul_buku', 'asc');
+            break;
+        case 'judul_desc':
+            $query->orderBy('judul_buku', 'desc');
+            break;
+        case 'stok_desc':
+            $query->orderBy('stok', 'desc');
+            break;
+        default: // terbaru
+            $query->orderBy('created_at', 'desc');
+            break;
+    }
+
+    $bukus = $query->paginate(10);
+
+    // Data untuk dropdown filter
+    $kategoris = Kategori::orderBy('name_kategori')->get();
+    $penulisList = Buku::select('penulis')->distinct()->orderBy('penulis')->pluck('penulis');
+
+    return view('buku.user.index', compact('bukus', 'kategoris', 'penulisList'));
+}
+public function userShow($id)
+{
+    $buku = Buku::with('kategori')->findOrFail($id);
+ 
+    $bukuTerkait = Buku::where('kategori_id', $buku->kategori_id)
+        ->where('id', '!=', $buku->id)
+        ->take(5)
+        ->get();
+ 
+    return view('buku.user.show', compact('buku', 'bukuTerkait'));
+}
 
 
 }
