@@ -5,9 +5,30 @@
         <div class="max-w-7xl mx-auto space-y-6">
 
             {{-- Page header --}}
-            <div>
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
                 <h1 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Katalog Buku</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400">Temukan koleksi buku yang tersedia di perpustakaan</p>
+                </div>
+               
+                <a href="{{ route('peminjam.checkout') }}"
+                    class="group relative flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-white
+                            shadow-sm hover:bg-emerald-600 hover:shadow-md
+                            dark:bg-emerald-600 dark:hover:bg-emerald-500
+                            transition-all duration-200">
+                        <i class="fa-solid fa-right-to-bracket transition-transform group-hover:translate-x-0.5"></i>
+                        <span class="font-medium">Pinjam</span>
+                        @php
+                            $jumlahKeranjang = count(session('keranjang_pinjam', []));
+                        @endphp
+                        @if ($jumlahKeranjang > 0)
+                            <span class="absolute -top-1.5 -right-1.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white ring-2 ring-white dark:ring-gray-900">
+                                {{ $jumlahKeranjang }}
+                            </span>
+                        @endif
+                    </a>
+
+                
             </div>
 
             {{-- Alert sukses --}}
@@ -20,7 +41,7 @@
             @endif
 
             {{-- Filter bar --}}
-            <form action="{{ route('katalog-buku.index') }}" method="GET"
+            <form action="{{route('peminjaman-buku.index')}}" method="GET"
                 class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:flex-row lg:items-center lg:justify-between">
 
                 <div class="flex flex-1 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -74,7 +95,7 @@
                         class="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 transition-colors">
                         Terapkan
                     </button>
-                    <a href="{{ route('katalog-buku.index') }}"
+                    <a href="{{ route('peminjaman-buku.index') }}"
                         class="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600
                                hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors">
                         Reset
@@ -101,6 +122,7 @@
                                     dark:border-slate-800 dark:bg-slate-900">
                             {{-- Cover --}}
                             <div class="p-4 pb-0">
+                                
                                 @if ($buku->cover)
                                     <img src="{{ asset('storage/' . $buku->cover) }}" alt="{{ $buku->judul_buku }}"
                                         class="h-56 w-full rounded-lg object-cover shadow-sm ring-1 ring-slate-200 dark:ring-slate-700">
@@ -113,39 +135,52 @@
                             </div>
 
                             {{-- Info --}}
-                            <div class="flex flex-1 flex-col p-4">
-                                <h3 class="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
-                                    {{ $buku->judul_buku }}
-                                </h3>
-                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                                    {{ $buku->penulis }}
-                                </p>
+                           <div class="flex flex-1 flex-col p-4">
+    <h3 class="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+        {{ $buku->judul_buku }}
+    </h3>
+    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {{ $buku->penulis }}
+    </p>
 
-                                <div class="mt-2">
-                                    <span class="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700
-                                                 dark:bg-indigo-500/10 dark:text-indigo-400">
-                                        {{ $buku->kategori->name_kategori ?? '-' }}
-                                    </span>
-                                </div>
+    <div class="mt-2">
+        <span class="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700
+                     dark:bg-indigo-500/10 dark:text-indigo-400">
+            {{ $buku->kategori->name_kategori ?? '-' }}
+        </span>
+    </div>
 
-                                <div class="mt-2 flex items-center gap-1.5 text-xs">
-                                    <span class="h-2 w-2 rounded-full
-                                        @if ($buku->stok > 5) bg-emerald-500
-                                        @elseif ($buku->stok > 0) bg-amber-500
-                                        @else bg-rose-500
-                                        @endif">
-                                    </span>
-                                    <span class="text-slate-500 dark:text-slate-400">
-                                        {{ $buku->stok > 0 ? 'Tersedia' : 'Habis' }}
-                                    </span>
-                                </div>
+    <div class="mt-2 flex items-center gap-1.5 text-xs">
+        <span class="h-2 w-2 rounded-full
+            @if ($buku->stok > 5) bg-emerald-500
+            @elseif ($buku->stok > 0) bg-amber-500
+            @else bg-rose-500
+            @endif">
+        </span>
+        <span class="text-slate-500 dark:text-slate-400">
+            {{ $buku->stok > 0 ? 'Tersedia' : 'Habis' }}
+        </span>
+    </div>
 
-                                <a href="{{ route('katalog-buku.show', $buku->id) }}"
-                                    class="mt-4 inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700
-                                           hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors">
-                                    Lihat Detail
-                                </a>
-                            </div>
+    <div class="mt-auto flex items-center gap-2 pt-4">
+        <a href="{{ route('katalog-buku.show', $buku->id) }}"
+            class="inline-flex flex-1 items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700
+                   hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors">
+            Lihat Detail
+        </a>
+
+        <form action="{{ route('peminjam.keranjang.tambah', $buku->id) }}" method="POST">
+            @csrf
+            <input type="hidden" name="buku_id" value="{{ $buku->id }}">
+            <button type="submit"
+                title="Pinjam buku ini"
+                class="inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm
+                       hover:bg-emerald-700 transition-colors">
+                <i class="fa-solid fa-right-to-bracket text-xs"></i>
+            </button>
+        </form>
+    </div>
+</div>
                         </div>
                     @endforeach
                 </div>

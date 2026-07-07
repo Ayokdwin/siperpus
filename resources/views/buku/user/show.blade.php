@@ -7,7 +7,7 @@
             {{-- Page header --}}
             <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('katalog-buku.index') }}"
+                    <a href="{{ route('peminjaman-buku.index') }}"
                         class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500
                                hover:bg-slate-100 hover:text-slate-700
                                dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200
@@ -163,7 +163,7 @@
 
             {{-- Kembali --}}
             <div>
-                <a href="{{ route('katalog-buku.index') }}"
+                <a href="{{ route('peminjaman-buku.index') }}"
                     class="rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600
                            hover:bg-slate-100
                            dark:text-slate-300 dark:hover:bg-slate-800

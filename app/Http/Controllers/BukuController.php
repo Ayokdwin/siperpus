@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Buku;
 use App\Models\Kategori;
+use App\Models\DetailPeminjam;
 use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
@@ -120,7 +121,7 @@ class BukuController extends Controller
         $buku->load([
             'kategori',
             'detailPeminjaman' => fn ($q) => $q->latest()->limit(5),
-            'detailPeminjaman.peminjam.user',
+            'detailPeminjaman.peminjaman.anggota',
         ]);
 
         return view('buku.show', compact('buku'));

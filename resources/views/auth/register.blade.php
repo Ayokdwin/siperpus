@@ -3,7 +3,7 @@
         <div class="text-center">
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">Daftar Akun</p>
             <h2 class="mt-2 text-2xl font-bold text-slate-900">Buat akun baru</h2>
-            <p class="mt-2 text-sm text-slate-500">Mulai kelola perpustakaan dengan tampilan yang lebih terstruktur.</p>
+            <p class="mt-2 text-sm text-slate-500">Buat akun baru dan mulai perjalanan membacamu bersama kami. Daftar sekarang untuk mengakses semua buku</p>
         </div>
 
         <form method="POST" action="{{ route('register') }}" class="space-y-4">

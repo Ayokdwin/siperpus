@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peminjam;
+use App\Models\DetailPeminjam;
+use App\Models\Buku;
+use App\Models\User;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamController extends Controller
 {
@@ -17,5 +22,140 @@ class PeminjamController extends Controller
     {
         $peminjams = Peminjam::where('user_id',Auth::id())->get();
         return view('peminjam.show',compact('peminjams'));
+    }
+    public function index(Request $request)
+{
+    $query = Buku::with('kategori');
+
+    // Search judul, penulis, atau ISBN/kode buku
+    if ($request->filled('q')) {
+        $search = $request->q;
+        $query->where(function ($sub) use ($search) {
+            $sub->where('judul_buku', 'like', "%{$search}%")
+                ->orWhere('penulis', 'like', "%{$search}%")
+                ->orWhere('kode_buku', 'like', "%{$search}%");
+        });
+    }
+
+    // Filter kategori
+    if ($request->filled('kategori')) {
+        $query->where('kategori_id', $request->kategori);
+    }
+
+    // Filter penulis
+    if ($request->filled('penulis')) {
+        $query->where('penulis', $request->penulis);
+    }
+
+    // Filter ketersediaan
+    if ($request->tersedia === 'tersedia') {
+        $query->where('stok', '>', 0);
+    } elseif ($request->tersedia === 'habis') {
+        $query->where('stok', '<=', 0);
+    }
+
+    // Sorting
+    switch ($request->get('sort', 'terbaru')) {
+        case 'judul_asc':
+            $query->orderBy('judul_buku', 'asc');
+            break;
+        case 'judul_desc':
+            $query->orderBy('judul_buku', 'desc');
+            break;
+        case 'stok_desc':
+            $query->orderBy('stok', 'desc');
+            break;
+        default: // terbaru
+            $query->orderBy('created_at', 'desc');
+            break;
+    }
+
+    $bukus = $query->paginate(10);
+
+    // Data untuk dropdown filter
+    $kategoris = Kategori::orderBy('name_kategori')->get();
+    $penulisList = Buku::select('penulis')->distinct()->orderBy('penulis')->pluck('penulis');
+
+    return view('peminjam.index', compact('bukus', 'kategoris', 'penulisList'));
+}
+public function tambahKeranjang(Request $request, Buku $buku)
+    {
+        $jumlah = max(1, (int) $request->input('jumlah', 1));
+
+        $keranjang = session('keranjang_pinjam', []);
+        $keranjang[$buku->id] = ($keranjang[$buku->id] ?? 0) + $jumlah;
+        session(['keranjang_pinjam' => $keranjang]);
+
+        return back()->with('success', "\"{$buku->judul_buku}\" ditambahkan ke keranjang.");
+    }
+    public function hapusKeranjang(Buku $buku)
+    {
+        $keranjang = session('keranjang_pinjam', []);
+        unset($keranjang[$buku->id]);
+        session(['keranjang_pinjam' => $keranjang]);
+
+        return back()->with('success', 'Buku dikeluarkan dari keranjang.');
+    }
+    public function checkout()
+    {
+        $keranjang = session('keranjang_pinjam', []);
+
+        if (empty($keranjang)) {
+            return redirect()->route('peminjaman-buku.index')->with('error', 'Keranjang masih kosong.');
+        }
+
+        $bukus = Buku::whereIn('id', array_keys($keranjang))->get();
+
+        // Ganti where('role', 'anggota') sesuai nama kolom kamu kalau beda
+        $anggotas = User::where('role', 'anggota')->orderBy('name')->get();
+
+        return view('peminjam.checkout', compact('bukus', 'keranjang', 'anggotas'));
+    }
+    public function prosesPeminjaman(Request $request)
+    {
+        $request->validate([
+            'user_id'          => 'required|exists:users,id',
+            'tgl_jatuh_tempo'  => 'required|date|after:today',
+        ]);
+
+        $keranjang = session('keranjang_pinjam', []);
+
+        if (empty($keranjang)) {
+            return redirect()->route('peminjam.index')->with('error', 'Keranjang kosong, tidak ada yang diproses.');
+        }
+
+        try {
+            DB::transaction(function () use ($request, $keranjang) {
+                $peminjam = Peminjam::create([
+                    'user_id'          => $request->user_id,
+                    'petugas_id'       => Auth::id(),
+                    'tgl_peminjaman'   => now(),
+                    'tgl_jatuh_tempo'  => $request->tgl_jatuh_tempo,
+                    'status'           => 'dipinjam',
+                ]);
+
+                foreach ($keranjang as $bukuId => $jumlah) {
+                    $buku = Buku::lockForUpdate()->findOrFail($bukuId);
+
+                    if ($buku->stok < $jumlah) {
+                        throw new \RuntimeException("Stok \"{$buku->judul_buku}\" tidak mencukupi.");
+                    }
+
+                    DetailPeminjam::create([
+                        'peminjaman_id' => $peminjam->id,
+                        'buku_id'       => $bukuId,
+                        'jumlah'        => $jumlah,
+                    ]);
+
+                    $buku->decrement('stok', $jumlah);
+                }
+            });
+        } catch (\RuntimeException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        session()->forget('keranjang_pinjam');
+
+        return redirect()->route('peminjam.riwayat')->with('success', 'Peminjaman berhasil diproses.');
     }
 }

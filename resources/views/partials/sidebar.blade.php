@@ -92,17 +92,17 @@
 
                 <div class="space-y-1">
                     {{-- Peminjaman --}}
-                    <a href=""
+                    <a href="{{ route('peminjaman-buku.index') }}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('peminjaman.*') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('peminjaman-buku.index*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book-open-reader w-[18px] text-center"></i>
                         <span x-show="!collapsed">Peminjaman</span>
                     </a>
 
                     {{-- Pengembalian --}}
-                    <a href=""
+                    <a href="{{route('pengembalian.index')}}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('pengembalian.*') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('pengembalian.index*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-rotate-left w-[18px] text-center"></i>
                         <span x-show="!collapsed">Pengembalian</span>
                     </a>
@@ -140,7 +140,7 @@
 
                 <div class="space-y-1">
                     {{-- Katalog Buku --}}
-                    <a href="{{ route('katalog-buku.index') }}"
+                    <a href=""
                         :class="collapsed && 'justify-center'"
                         class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('katalog-buku.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book w-[18px] text-center"></i>
