@@ -156,6 +156,6 @@ public function tambahKeranjang(Request $request, Buku $buku)
 
         session()->forget('keranjang_pinjam');
 
-        return redirect()->route('peminjam.riwayat')->with('success', 'Peminjaman berhasil diproses.');
+        return redirect()->route('pengembalian.index')->with('success', 'Peminjaman berhasil diproses.');
     }
 }
