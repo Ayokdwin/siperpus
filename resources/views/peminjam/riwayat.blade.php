@@ -34,10 +34,10 @@
                                             {{ $detail->jumlah }}
                                         </td>
                                         <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
-                                            {{ $peminjaman->tanggal_pinjam?->translatedFormat('d M Y') ?? '-' }}
+                                            {{ $peminjaman->tgl_peminjaman?->translatedFormat('d M Y') ?? '-' }}
                                         </td>
                                         <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
-                                            {{ $peminjaman->tanggal_kembali_rencana?->translatedFormat('d M Y') ?? '-' }}
+                                            {{ $peminjaman->tgl_jatuh_tempo?->translatedFormat('d M Y') ?? '-' }}
                                         </td>
                                         <td class="px-6 py-3">
                                             <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize

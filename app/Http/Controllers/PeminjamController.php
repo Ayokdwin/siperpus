@@ -19,10 +19,13 @@ class PeminjamController extends Controller
         return view('peminjam.riwayat',compact('peminjams'));
     }
     public function show()
-    {
-        $peminjams = Peminjam::where('user_id',Auth::id())->get();
-        return view('peminjam.show',compact('peminjams'));
-    }
+{
+    $peminjams = Peminjam::where('user_id', Auth::id())
+        ->where('status', 'dipinjam')
+        ->get();
+
+    return view('peminjam.mypinjaman', compact('peminjams'));
+}
     public function index(Request $request)
 {
     $query = Buku::with('kategori');

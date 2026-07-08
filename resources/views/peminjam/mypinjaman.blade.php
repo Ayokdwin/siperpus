@@ -39,7 +39,7 @@
                                         Tanggal Pinjam
                                     </p>
                                     <p class="mt-1 text-sm font-medium text-slate-800 dark:text-slate-200">
-                                        {{ $peminjaman->tanggal_pinjam?->translatedFormat('d M Y') ?? '-' }}
+                                        {{ $peminjaman->tgl_peminjaman?->translatedFormat('d M Y') ?? '-' }}
                                     </p>
                                 </div>
 
@@ -50,24 +50,13 @@
                                         @elseif ($peminjaman->status === 'terlambat')
                                             bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400
                                         @else
-                                            bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300
+                                            bg-emerald-100 text-emerald-600 dark:bg-emerald-800 dark:text-emerald-300
                                         @endif
                                     ">
                                         {{ $peminjaman->status }}
                                     </span>
 
-                                    @if ($peminjaman->status === 'dipinjam')
-                                        <form action="" method="POST"
-                                            onsubmit="return confirm('Batalkan pengajuan peminjaman ini?')">
-                                            @csrf
-                                            <button type="submit"
-                                                class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-600
-                                                       hover:bg-rose-100 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400
-                                                       dark:hover:bg-rose-500/20 transition-colors">
-                                                Batalkan
-                                            </button>
-                                        </form>
-                                    @endif
+                                   
                                 </div>
                             </div>
 
@@ -101,7 +90,7 @@
                                 <p class="text-xs text-slate-500 dark:text-slate-400">
                                     Batas pengembalian:
                                     <span class="font-medium text-slate-700 dark:text-slate-200">
-                                        {{ $peminjaman->tanggal_kembali_rencana?->translatedFormat('d M Y') ?? '-' }}
+                                        {{ $peminjaman->tgl_jatuh_tempo?->translatedFormat('d M Y') ?? '-' }}
                                     </span>
                                 </p>
                             </div>
@@ -119,7 +108,7 @@
                     <i class="fa-solid fa-bookmark text-4xl text-slate-300 dark:text-slate-600"></i>
                     <p class="mt-3 text-sm font-medium text-slate-600 dark:text-slate-300">Belum ada peminjaman aktif</p>
                     <p class="text-sm text-slate-400 dark:text-slate-500">Jelajahi katalog buku dan mulai pinjam koleksi favoritmu</p>
-                    <a href="{{ route('katalog-buku.index') }}"
+                    <a href=""
                         class="mt-4 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 transition-colors">
                         Lihat Katalog Buku
                     </a>

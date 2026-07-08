@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/peminjam/checkout', [PeminjamController::class, 'prosesPeminjaman'])->name('peminjam.proses');
     #pengembalian
     Route::get('/pengembalian-buku',[PengembalianController::class,'index'])->name('pengembalian.index');
+    Route::get('/pengembalian-buku/konfirmasi/{id}',[PengembalianController::class,'konfirmasi'])->name('pengembalian.konfirmasi');
+    Route::post('pengembalian/konfirmasi/{id}', [PengembalianController::class, 'proses'])->name('pengembalian.proses');
 });
 
 require __DIR__.'/auth.php';

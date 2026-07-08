@@ -112,6 +112,7 @@
             {{-- ===================== --}}
             {{-- LAPORAN               --}}
             {{-- ===================== --}}
+            @if($currentUser->role == 'admin')
             <div>
                 <p x-show="!collapsed" class="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                     Laporan
@@ -126,6 +127,8 @@
                     </a>
                 </div>
             </div>
+            @endif
+
 
         @endif
 

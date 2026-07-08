@@ -137,24 +137,24 @@
 
                                     <td class="px-4 py-3">
                                         <div class="flex items-center justify-end gap-1.5">
-                                            <a href=""
-                                                title="Lihat Detail"
+                                            <a href="{{route('pengembalian.konfirmasi',$peminjam->id)}}"
+                                                title="Konfirmasi Pengembalian"
                                                 class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
                                                        hover:bg-sky-50 hover:text-sky-600
                                                        dark:text-slate-400 dark:hover:bg-sky-500/10 dark:hover:text-sky-400
                                                        transition-colors">
-                                                <i class="fa-solid fa-eye text-xs"></i>
+                                                <i class="fa-solid fa-circle-check text-xs"></i>
                                             </a>
 
                                             <a href=""
-                                                title="Edit"
+                                                title="Perpanjang peminjaman"
                                                 class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
                                                        hover:bg-emerald-50 hover:text-emerald-600
                                                        dark:text-slate-400 dark:hover:bg-emerald-500/10 dark:hover:text-emerald-400
                                                        transition-colors">
-                                                <i class="fa-solid fa-pen text-xs"></i>
+                                                <i class="fa-solid fa-calendar-plus text-xs"></i>
                                             </a>
-
+                                            @if(Auth::user()->role == 'admin')
                                             <form action="" method="POST"
                                                 onsubmit="return confirm('Yakin ingin menghapus kategori ')">
                                                 @csrf
@@ -167,6 +167,7 @@
                                                     <i class="fa-solid fa-trash text-xs"></i>
                                                 </button>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
