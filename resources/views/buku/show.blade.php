@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-950">
-        <div class="max-w-6xl mx-auto space-y-6">
+        <div class="max-w-5xl mx-auto space-y-6">
 
             {{-- Page header --}}
             <div class="flex items-center justify-between gap-3">
@@ -113,49 +113,49 @@
 
             {{-- Riwayat peminjaman buku ini --}}
            @if ($buku->detailPeminjaman->isNotEmpty())
-    <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div class="border-b border-slate-100 px-6 py-4 dark:border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100">Riwayat Peminjaman</h3>
-        </div>
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div class="border-b border-slate-100 px-6 py-4 dark:border-slate-800">
+                        <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100">Riwayat Peminjaman</h3>
+                    </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-slate-800/60 dark:text-slate-400">
-                    <tr>
-                        <th class="px-6 py-3 font-medium">Peminjam</th>
-                        <th class="px-6 py-3 font-medium">Jumlah</th>
-                        <th class="px-6 py-3 font-medium">Tanggal Pinjam</th>
-                        <th class="px-6 py-3 font-medium">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                    @foreach ($buku->detailPeminjaman as $detail)
-                        <tr>
-                            <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
-                                {{ $detail->peminjaman?->anggota?->name ?? '-' }}
-                            </td>
-                            <td class="px-6 py-3 text-slate-600 dark:text-slate-300">{{ $detail->jumlah }}</td>
-                            <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
-                                {{ $detail->peminjaman?->tgl_peminjaman ? \Carbon\Carbon::parse($detail->peminjaman->tgl_peminjaman)->translatedFormat('d M Y') : '-' }}
-                            </td>
-                            <td class="px-6 py-3">
-                                <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize
-                                    @if ($detail->peminjaman?->status === 'dikembalikan')
-                                        bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400
-                                    @else
-                                        bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400
-                                    @endif
-                                ">
-                                    {{ $detail->peminjaman?->status ?? '-' }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-@endif
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-slate-800/60 dark:text-slate-400">
+                                <tr>
+                                    <th class="px-6 py-3 font-medium">Peminjam</th>
+                                    <th class="px-6 py-3 font-medium">Jumlah</th>
+                                    <th class="px-6 py-3 font-medium">Tanggal Pinjam</th>
+                                    <th class="px-6 py-3 font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                @foreach ($buku->detailPeminjaman as $detail)
+                                    <tr>
+                                        <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
+                                            {{ $detail->peminjaman?->anggota?->name ?? '-' }}
+                                        </td>
+                                        <td class="px-6 py-3 text-slate-600 dark:text-slate-300">{{ $detail->jumlah }}</td>
+                                        <td class="px-6 py-3 text-slate-600 dark:text-slate-300">
+                                            {{ $detail->peminjaman?->tgl_peminjaman ? \Carbon\Carbon::parse($detail->peminjaman->tgl_peminjaman)->translatedFormat('d M Y') : '-' }}
+                                        </td>
+                                        <td class="px-6 py-3">
+                                            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize
+                                                @if ($detail->peminjaman?->status === 'dikembalikan')
+                                                    bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400
+                                                @else
+                                                    bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400
+                                                @endif
+                                            ">
+                                                {{ $detail->peminjaman?->status ?? '-' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
 
             {{-- Action buttons --}}
             <div class="flex items-center justify-between gap-3">
@@ -166,7 +166,6 @@
                            transition-colors">
                     &larr; Kembali ke Daftar
                 </a>
-
                 <form action="{{ route('buku.destroy', $buku->id) }}" method="POST"
                     onsubmit="return confirm('Yakin ingin menghapus buku {{ $buku->judul_buku }}? Tindakan ini tidak dapat dibatalkan.')">
                     @csrf

@@ -45,14 +45,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('buku', BukuController::class);
     #peminjaman
     Route::get('/peminjaman-buku', [PeminjamController::class, 'index'])->name('peminjaman-buku.index');
-    
+
     Route::delete('/peminjam/keranjang/{buku}', [PeminjamController::class, 'hapusKeranjang'])->name('peminjam.keranjang.hapus');
-    
+
     Route::post('/peminjam/checkout', [PeminjamController::class, 'prosesPeminjaman'])->name('peminjam.proses');
     #pengembalian
     Route::get('/pengembalian-buku',[PengembalianController::class,'index'])->name('pengembalian.index');
     Route::get('/pengembalian-buku/konfirmasi/{id}',[PengembalianController::class,'konfirmasi'])->name('pengembalian.konfirmasi');
     Route::post('pengembalian/konfirmasi/{id}', [PengembalianController::class, 'proses'])->name('pengembalian.proses');
+    Route::get('/pengembalian/{peminjam}/perpanjang', [PengembalianController::class, 'perpanjang'])
+    ->name('pengembalian.perpanjang');
+    Route::put('/pengembalian/{peminjam}/perpanjang', [PengembalianController::class, 'updatePerpanjang'])
+        ->name('pengembalian.perpanjang.update');
 });
 
 require __DIR__.'/auth.php';

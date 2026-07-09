@@ -123,10 +123,12 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Batalkan"
-                                                class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 ml-auto
-                                                       hover:bg-rose-50 hover:text-rose-600
-                                                       dark:text-slate-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400
-                                                       transition-colors">
+                                                class="flex h-8 w-8 items-center justify-center ml-auto rounded-lg
+                                                    border border-rose-300 text-rose-600
+                                                    hover:bg-rose-50 hover:border-rose-500 hover:text-rose-700
+                                                    dark:border-rose-500/40 dark:text-rose-400
+                                                    dark:hover:bg-rose-500/10 dark:hover:border-rose-400
+                                                    transition-colors">
                                                 <i class="fa-solid fa-xmark text-xs"></i>
                                             </button>
                                         </form>

@@ -64,7 +64,7 @@
                     <table class="w-full text-sm text-left">
                         <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-slate-800/60 dark:text-slate-400">
                             <tr>
-                                
+
                                 <th class="px-4 py-3 font-medium">Nama </th>
                                 <th class="px-4 py-3 font-medium">Nama Petugas </th>
                                 <th class="px-4 py-3 font-medium">Tanggal Peminjaman</th>
@@ -79,11 +79,11 @@
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                            @foreach($peminjams as $peminjam)
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                                    
+
 
                                     <td class="px-4 py-3">
                                         <div class="flex items-center gap-3">
-                                           
+
                                             <span class="font-medium text-slate-800 dark:text-slate-100">
                                                 {{$peminjam->anggota->name}}
                                             </span>
@@ -91,7 +91,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center gap-3">
-                                           
+
                                             <span class="font-medium text-slate-800 dark:text-slate-100">
                                                 {{$peminjam->petugas->name}}
                                             </span>
@@ -110,7 +110,7 @@
                                            {{$peminjam->tgl_jatuh_tempo->translatedFormat('d M Y') ?? '-'}}
                                         </span>
                                     </td>
-                                    
+
                                     <td class="px-4 py-3">
                                         <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600
                                                      dark:bg-slate-800 dark:text-slate-300">
@@ -124,7 +124,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    
+
                                    <td class="px-4 py-3">
                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium
                                             {{ $peminjam->status == 'dikembalikan'
@@ -133,43 +133,48 @@
                                             {{ $peminjam->status }}
                                         </span>
                                     </td>
-                                    
+
 
                                     <td class="px-4 py-3">
-                                        @if($peminjam->status !== 'dikembalikan' )
-                                        <div class="flex items-center justify-end gap-1.5">
-                                            <a href="{{route('pengembalian.konfirmasi',$peminjam->id)}}"
-                                                title="Konfirmasi Pengembalian"
-                                                class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
-                                                       hover:bg-sky-50 hover:text-sky-600
-                                                       dark:text-slate-400 dark:hover:bg-sky-500/10 dark:hover:text-sky-400
-                                                       transition-colors">
-                                                <i class="fa-solid fa-circle-check text-xs"></i>
-                                            </a>
+                                        <div class="flex items-center justify-end gap-2">
+
+                                            @if($peminjam->status !== 'dikembalikan')
+                                                <a href="{{ route('pengembalian.konfirmasi', $peminjam->id) }}"
+                                                    title="Konfirmasi Pengembalian"
+                                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
+                                                        hover:bg-sky-50 hover:text-sky-600
+                                                        dark:text-slate-400 dark:hover:bg-sky-500/10 dark:hover:text-sky-400
+                                                        transition-colors">
+                                                    <i class="fa-solid fa-circle-check text-xs"></i>
+                                                </a>
                                             @endif
 
-                                            <a href=""
+                                            <a href="{{ route('pengembalian.perpanjang', $peminjam->id) }}"
                                                 title="Perpanjang peminjaman"
                                                 class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
-                                                       hover:bg-emerald-50 hover:text-emerald-600
-                                                       dark:text-slate-400 dark:hover:bg-emerald-500/10 dark:hover:text-emerald-400
-                                                       transition-colors">
+                                                    hover:bg-emerald-50 hover:text-emerald-600
+                                                    dark:text-slate-400 dark:hover:bg-emerald-500/10 dark:hover:text-emerald-400
+                                                    transition-colors">
                                                 <i class="fa-solid fa-calendar-plus text-xs"></i>
                                             </a>
+
                                             @if(Auth::user()->role == 'admin')
-                                            <form action="" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus kategori ')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" title="Hapus"
-                                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
-                                                           hover:bg-rose-50 hover:text-rose-600
-                                                           dark:text-slate-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400
-                                                           transition-colors">
-                                                    <i class="fa-solid fa-trash text-xs"></i>
-                                                </button>
-                                            </form>
+                                                <form action="" method="POST"
+                                                    onsubmit="return confirm('Yakin ingin menghapus data?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit"
+                                                        title="Hapus"
+                                                        class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500
+                                                            hover:bg-rose-50 hover:text-rose-600
+                                                            dark:text-slate-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400
+                                                            transition-colors">
+                                                        <i class="fa-solid fa-trash text-xs"></i>
+                                                    </button>
+                                                </form>
                                             @endif
+
                                         </div>
                                     </td>
                                 </tr>
@@ -187,7 +192,7 @@
                 </div>
 
                 {{-- Pagination --}}
-                
+
             </div>
         </div>
     </main>
