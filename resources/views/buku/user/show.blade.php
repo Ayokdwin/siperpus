@@ -19,15 +19,15 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400">Informasi lengkap koleksi buku</p>
                     </div>
                 </div>
-
-                @if ($buku->stok > 0)
-                    <form action="" method="POST">
+                @if(auth()->user()->role !== 'anggota')
+                @if ($buku->stok > 0 )
+                    <form action="{{ route('peminjam.keranjang.tambah', $buku->id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="buku_id" value="{{ $buku->id }}">
                         <button type="submit"
                             class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm
                                    hover:bg-emerald-700 transition-colors">
-                            <i class="fa-solid fa-bookmark text-xs"></i>
+                            <i class="fa-solid fa-right-to-bracket text-xs"></i>
                             Pinjam Buku
                         </button>
                     </form>
@@ -38,6 +38,7 @@
                         <i class="fa-solid fa-bookmark text-xs"></i>
                         Stok Habis
                     </button>
+                @endif
                 @endif
             </div>
 

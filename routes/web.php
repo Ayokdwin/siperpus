@@ -7,15 +7,21 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PeminjamController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\DashboardController;
+
 use App\Models\Peminjam;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard-admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
+    Route::get('/dashboard-petugas', [DashboardController::class, 'indexPetugas'])->name('dashboard.petugas');
+    Route::get('/dashboard-anggota', [DashboardController::class, 'indexAnggota'])->name('dashboard.anggota');
+
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,8 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman-saya',[PeminjamController::class,'show'])->name('peminjaman-saya.show');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
     Route::resource('users', UserController::class);
+    #peminjaman
+    Route::get('/peminjam/checkout', [PeminjamController::class, 'checkout'])->name('peminjam.checkout');
+    Route::post('/peminjam/keranjang/{buku}', [PeminjamController::class, 'tambahKeranjang'])->name('peminjam.keranjang.tambah');
 });
 
 Route::middleware('auth')->group(function () {
@@ -36,9 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('buku', BukuController::class);
     #peminjaman
     Route::get('/peminjaman-buku', [PeminjamController::class, 'index'])->name('peminjaman-buku.index');
-    Route::post('/peminjam/keranjang/{buku}', [PeminjamController::class, 'tambahKeranjang'])->name('peminjam.keranjang.tambah');
+    
     Route::delete('/peminjam/keranjang/{buku}', [PeminjamController::class, 'hapusKeranjang'])->name('peminjam.keranjang.hapus');
-    Route::get('/peminjam/checkout', [PeminjamController::class, 'checkout'])->name('peminjam.checkout');
+    
     Route::post('/peminjam/checkout', [PeminjamController::class, 'prosesPeminjaman'])->name('peminjam.proses');
     #pengembalian
     Route::get('/pengembalian-buku',[PengembalianController::class,'index'])->name('pengembalian.index');

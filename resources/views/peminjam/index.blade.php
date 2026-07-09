@@ -10,7 +10,7 @@
                 <h1 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Katalog Buku</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400">Temukan koleksi buku yang tersedia di perpustakaan</p>
                 </div>
-               
+               @if(auth()->user()->role !== 'anggota')
                 <a href="{{ route('peminjam.checkout') }}"
                     class="group relative flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-white
                             shadow-sm hover:bg-emerald-600 hover:shadow-md
@@ -27,7 +27,7 @@
                             </span>
                         @endif
                     </a>
-
+                    @endif
                 
             </div>
 
@@ -168,7 +168,7 @@
                    hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors">
             Lihat Detail
         </a>
-
+       @if(auth()->user()->role !== 'anggota')
         <form action="{{ route('peminjam.keranjang.tambah', $buku->id) }}" method="POST">
             @csrf
             <input type="hidden" name="buku_id" value="{{ $buku->id }}">
@@ -179,6 +179,7 @@
                 <i class="fa-solid fa-right-to-bracket text-xs"></i>
             </button>
         </form>
+        @endif
     </div>
 </div>
                         </div>

@@ -105,10 +105,10 @@
                 {{-- Empty state --}}
                 <div class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white py-16
                             dark:border-slate-800 dark:bg-slate-900">
-                    <i class="fa-solid fa-bookmark text-4xl text-slate-300 dark:text-slate-600"></i>
+                    <i class="fa-solid fa-book w-[18px] text-4xl text-slate-300 dark:text-slate-600"></i>
                     <p class="mt-3 text-sm font-medium text-slate-600 dark:text-slate-300">Belum ada peminjaman aktif</p>
                     <p class="text-sm text-slate-400 dark:text-slate-500">Jelajahi katalog buku dan mulai pinjam koleksi favoritmu</p>
-                    <a href=""
+                    <a href="{{ route('peminjaman-buku.index') }}"
                         class="mt-4 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 transition-colors">
                         Lihat Katalog Buku
                     </a>

@@ -136,6 +136,7 @@
                                     
 
                                     <td class="px-4 py-3">
+                                        @if($peminjam->status !== 'dikembalikan' )
                                         <div class="flex items-center justify-end gap-1.5">
                                             <a href="{{route('pengembalian.konfirmasi',$peminjam->id)}}"
                                                 title="Konfirmasi Pengembalian"
@@ -145,6 +146,7 @@
                                                        transition-colors">
                                                 <i class="fa-solid fa-circle-check text-xs"></i>
                                             </a>
+                                            @endif
 
                                             <a href=""
                                                 title="Perpanjang peminjaman"

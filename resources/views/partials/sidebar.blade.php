@@ -143,9 +143,9 @@
 
                 <div class="space-y-1">
                     {{-- Katalog Buku --}}
-                    <a href=""
+                    <a href="{{ route('peminjaman-buku.index') }}"
                         :class="collapsed && 'justify-center'"
-                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('katalog-buku.*') ? $activeClasses : $inactiveClasses }}">
+                        class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('peminjaman-buku.index*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-book w-[18px] text-center"></i>
                         <span x-show="!collapsed">Katalog Buku</span>
                     </a>

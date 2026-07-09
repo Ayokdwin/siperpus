@@ -15,9 +15,10 @@ class PeminjamController extends Controller
 {
     public function riwayat()
     {
-        $peminjams = Peminjam::where('user_id',Auth::id())->get();
+        $peminjams = Peminjam::where('user_id',Auth::id())->where('status','dikembalikan')->get();
         return view('peminjam.riwayat',compact('peminjams'));
     }
+    
     public function show()
 {
     $peminjams = Peminjam::where('user_id', Auth::id())
