@@ -8,8 +8,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PeminjamController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\DashboardController;
-
-use App\Models\Peminjam;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +37,12 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
     #peminjaman
     Route::get('/peminjam/checkout', [PeminjamController::class, 'checkout'])->name('peminjam.checkout');
     Route::post('/peminjam/keranjang/{buku}', [PeminjamController::class, 'tambahKeranjang'])->name('peminjam.keranjang.tambah');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    #laporan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
 });
 
 Route::middleware('auth')->group(function () {

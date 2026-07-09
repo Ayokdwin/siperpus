@@ -119,7 +119,7 @@
                 </p>
 
                 <div class="space-y-1">
-                    <a href=""
+                    <a href="{{ route('laporan.index') }}"
                         :class="collapsed && 'justify-center'"
                         class="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors {{ $isActive('laporan.*') ? $activeClasses : $inactiveClasses }}">
                         <i class="fa-solid fa-chart-column w-[18px] text-center"></i>
