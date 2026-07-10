@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-950">
-        <div class="max-w-5xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto space-y-6">
 
             {{-- Page header --}}
             <div>
@@ -86,13 +86,17 @@
                             </div>
 
                             {{-- Batas kembali --}}
-                            <div class="border-t border-slate-100 px-6 py-3 dark:border-slate-800">
+                            <div class="flex items-center justify-between border-t border-slate-100 px-6 py-3 dark:border-slate-800">
                                 <p class="text-xs text-slate-500 dark:text-slate-400">
                                     Batas pengembalian:
                                     <span class="font-medium text-slate-700 dark:text-slate-200">
                                         {{ $peminjaman->tgl_jatuh_tempo?->translatedFormat('d M Y') ?? '-' }}
                                     </span>
                                 </p>
+                                <a href="{{ route('peminjaman-detail.show', $peminjaman->id) }}"
+                                    class="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 hover:underline dark:text-emerald-400">
+                                    Detail <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                </a>
                             </div>
                         </div>
                     @endforeach

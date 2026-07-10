@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-950">
-        <div class="max-w-5xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto space-y-6">
 
             {{-- Page header --}}
             <div>
@@ -21,6 +21,7 @@
                                 <th class="px-6 py-3 font-medium">Tanggal Pinjam</th>
                                 <th class="px-6 py-3 font-medium">Batas Kembali</th>
                                 <th class="px-6 py-3 font-medium">Status</th>
+                                <th class="px-6 py-3 font-medium text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -54,11 +55,17 @@
                                                 {{ $peminjaman->status }}
                                             </span>
                                         </td>
+                                        <td class="px-6 py-3 text-right">
+                                            <a href="{{ route('peminjaman-detail.show', $peminjaman->id) }}"
+                                                class="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 hover:underline dark:text-emerald-400">
+                                                Detail <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-400 dark:text-slate-500">
+                                    <td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400 dark:text-slate-500">
                                         Belum ada riwayat peminjaman
                                     </td>
                                 </tr>

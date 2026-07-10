@@ -18,7 +18,16 @@ class PeminjamController extends Controller
         $peminjams = Peminjam::where('user_id',Auth::id())->where('status','dikembalikan')->get();
         return view('peminjam.riwayat',compact('peminjams'));
     }
-    
+
+    public function detail($id)
+    {
+        $peminjaman = Peminjam::with(['anggota', 'petugas', 'detailPeminjaman.buku'])
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        return view('peminjam.detail', compact('peminjaman'));
+    }
+
     public function show()
 {
     $peminjams = Peminjam::where('user_id', Auth::id())
@@ -31,7 +40,6 @@ class PeminjamController extends Controller
 {
     $query = Buku::with('kategori');
 
-    // Search judul, penulis, atau ISBN/kode buku
     if ($request->filled('q')) {
         $search = $request->q;
         $query->where(function ($sub) use ($search) {
@@ -41,24 +49,20 @@ class PeminjamController extends Controller
         });
     }
 
-    // Filter kategori
     if ($request->filled('kategori')) {
         $query->where('kategori_id', $request->kategori);
     }
 
-    // Filter penulis
     if ($request->filled('penulis')) {
         $query->where('penulis', $request->penulis);
     }
 
-    // Filter ketersediaan
     if ($request->tersedia === 'tersedia') {
         $query->where('stok', '>', 0);
     } elseif ($request->tersedia === 'habis') {
         $query->where('stok', '<=', 0);
     }
 
-    // Sorting
     switch ($request->get('sort', 'terbaru')) {
         case 'judul_asc':
             $query->orderBy('judul_buku', 'asc');
@@ -69,14 +73,13 @@ class PeminjamController extends Controller
         case 'stok_desc':
             $query->orderBy('stok', 'desc');
             break;
-        default: // terbaru
+        default:
             $query->orderBy('created_at', 'desc');
             break;
     }
 
     $bukus = $query->paginate(10);
 
-    // Data untuk dropdown filter
     $kategoris = Kategori::orderBy('name_kategori')->get();
     $penulisList = Buku::select('penulis')->distinct()->orderBy('penulis')->pluck('penulis');
 
@@ -110,7 +113,6 @@ public function tambahKeranjang(Request $request, Buku $buku)
 
         $bukus = Buku::whereIn('id', array_keys($keranjang))->get();
 
-        // Ganti where('role', 'anggota') sesuai nama kolom kamu kalau beda
         $anggotas = User::where('role', 'anggota')->orderBy('name')->get();
 
         return view('peminjam.checkout', compact('bukus', 'keranjang', 'anggotas'));
