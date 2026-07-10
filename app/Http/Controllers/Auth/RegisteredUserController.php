@@ -24,7 +24,26 @@ class RegisteredUserController extends Controller
     }
 
     /**
+     * Generate kode anggota otomatis, format: AGT0001, AGT0002, dst.
+     */
+    private function generateKodeAnggota(): string
+    {
+        $lastUser = User::whereNotNull('kode_anggota')
+            ->orderByDesc('id')
+            ->first();
+
+        if (!$lastUser) {
+            return 'AGT0001';
+        }
+
+        $lastNumber = (int) substr($lastUser->kode_anggota, 3);
+
+        return 'AGT' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Handle an incoming registration request.
+     * Registrasi publik selalu membuat akun dengan role "anggota".
      *
      * @throws ValidationException
      */
@@ -33,13 +52,17 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'alamat' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
+            'role' => 'anggota',
+            'kode_anggota' => $this->generateKodeAnggota(),
         ]);
 
         event(new Registered($user));
