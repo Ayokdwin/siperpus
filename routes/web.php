@@ -21,9 +21,6 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard-admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
-    Route::get('/dashboard-petugas', [DashboardController::class, 'indexPetugas'])->name('dashboard.petugas');
-    Route::get('/dashboard-anggota', [DashboardController::class, 'indexAnggota'])->name('dashboard.anggota');
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,23 +41,13 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
 
     Route::get('/peminjam/checkout', [PeminjamController::class, 'checkout'])->name('peminjam.checkout');
     Route::post('/peminjam/keranjang/{buku}', [PeminjamController::class, 'tambahKeranjang'])->name('peminjam.keranjang.tambah');
-});
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
-});
-
-Route::middleware('auth')->group(function () {
-
-    // Manajemen Kategori (Admin)
+    // Manajemen Kategori (Admin & Petugas)
     Route::resource('kategori', KategoriController::class);
 
-    // Manajemen Buku (Admin/Petugas) & Lihat/Cari Buku (Anggota)
+    // Manajemen Buku (Admin & Petugas)
     Route::resource('buku', BukuController::class);
 
-    // Peminjaman Buku
-    Route::get('/peminjaman-buku', [PeminjamController::class, 'index'])->name('peminjaman-buku.index');
     Route::delete('/peminjam/keranjang/{buku}', [PeminjamController::class, 'hapusKeranjang'])->name('peminjam.keranjang.hapus');
     Route::post('/peminjam/checkout', [PeminjamController::class, 'prosesPeminjaman'])->name('peminjam.proses');
 
@@ -70,6 +57,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/pengembalian/konfirmasi/{id}', [PengembalianController::class, 'proses'])->name('pengembalian.proses');
     Route::get('/pengembalian/{peminjam}/perpanjang', [PengembalianController::class, 'perpanjang'])->name('pengembalian.perpanjang');
     Route::put('/pengembalian/{peminjam}/perpanjang', [PengembalianController::class, 'updatePerpanjang'])->name('pengembalian.perpanjang.update');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
+});
+
+Route::middleware('auth')->group(function () {
+    // Peminjaman Buku (katalog untuk anggota, dipakai juga oleh admin/petugas)
+    Route::get('/peminjaman-buku', [PeminjamController::class, 'index'])->name('peminjaman-buku.index');
 });
 
 require __DIR__.'/auth.php';
