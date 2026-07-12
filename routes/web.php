@@ -37,8 +37,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
-    Route::resource('users', UserController::class);
-
     Route::get('/peminjam/checkout', [PeminjamController::class, 'checkout'])->name('peminjam.checkout');
     Route::post('/peminjam/keranjang/{buku}', [PeminjamController::class, 'tambahKeranjang'])->name('peminjam.keranjang.tambah');
 
@@ -60,6 +58,7 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
 });
